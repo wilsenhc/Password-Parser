@@ -1,78 +1,51 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
+ void yyerror(char s[]);
+ extern int yylex(void);
+
+
 %}
 
 %token VALIDO NOVALIDO
+%token VALIDO1
+%token VALIDO2
+%token VALIDO3
+%token VALIDO4
+%token VALIDO5
+%token VALIDO6
+%token VALIDO7
+%token VALIDO8
+%token VALIDO9
+%token VALIDO10
+%token VALIDO11
+%token VALIDO12
+%token VALIDO13
+%token VALIDO14
+%token VALIDO15
+%token VALIDO16
+%token VALIDO17
+%token VALIDO18
+%token VALIDO19
+%token VALIDO20
+%token VALIDO21
+%token VALIDO22
+%token VALIDO23
 %token END
 
 %start Init
 %%
 
-Init: VALIDO {comprobar(yytext)} 
-|  NOVALIDO{comprobar(yytext)}
+Init: VALIDO {} 
+|  NOVALIDO{}
 | END;
 
 
 %%
 
-void comprobar(char c[])
-{
-    int i,min,may,sim,tam;
-    min = 0;
-    may = 0;
-    sim = 0;
-    tam = strlen(c);
-    tamano(c);  
-
-    for(i = 0; i < tam ; i++)
-    {
-        if(c[i] >= 'a' && c[i] <= 'z')
-        {
-            min++;
-        }
-        if(c[i] >= 'A' && c[i] <= 'Z')
-        {
-            may++;
-        }
-        if(c[i] == '=' ||c[i] == '*' ||c[i] == '-' ||c[i] == '_' ||c[i] == '.' ||c[i] == '@' ||c[i] == '&' )
-        {
-            sim++;
-        }
-    }
-    if(!min)
-    {
-        printf("\nLa clave debe de tener por lo menos una letras minuscula\n");
-    }
-    if(!may)
-    {
-        printf("\nLa clave debe de tener por lo menos una letras mayuscula\n");
-    }
-    if(!sim)
-    {
-        printf("\nLa clave debe de tener por lo menos un simbolo especial valido\n");
-    }
-}
-
-void tamano(char c[])
-{
-    int tam;
-
-    tam = strlen(c);
-
-    if(tam < 8 || tam > 15)
-    {
-        printf("error con el tamaño de la clave debe de estar entre 8 y 15 caracteres\n")
-    }
-}
-
-int yyerror(char *s)
+void yyerror(char s[])
 {
     printf("ERROR: %s\n",s);
-    return 1;
-}
-
-int main(void)
-{
-    yyparse();
 }
