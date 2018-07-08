@@ -15,16 +15,17 @@ numero [0-9]+
 simbolo [=*-_.@&]+
 nosimbolo [!#$,/\:ˆ(){}’";%+?<>‘∼º¿¡áéíóúñÑ]+
 linea [\n]
+%array
 
 %%
 
  /**********REGLAS**********/
  
-{minuscula} { strcpy(yylval.cad,yytext); return MIN; }
-{mayuscula} {strcpy(yylval.cad,yytext); return MAYUS;}
-{numero} {strcpy(yylval.cad,yytext); return NUM;}
-{simbolo} {strcpy(yylval.cad,yytext); return SIMB;}
-{linea} {return END;}
+{minuscula} {strcpy(yylval.cad,yytext); printf("\n\n\n\nLLEGO HASTA MIN : %s\n\n\n\n",yylval.cad);  return MIN; }
+{mayuscula} {strcpy(yylval.cad,yytext); printf("\n\n\n\nLLEGO HASTA MAYUS : %s\n\n\n\n",yylval.cad); return MAYUS;}
+{numero} {strcpy(yylval.cad,yytext); printf("\n\n\n\nLLEGO HASTA NUM : %s\n\n\n\n",yylval.cad); return NUM;}
+{simbolo} {strcpy(yylval.cad,yytext);printf("\n\n\n\nLLEGO HASTA SIMB : %s\n\n\n\n",yylval.cad); return SIMB;}
+{linea} {return END; printf("\n\n\n\nLLEGO HASTA END\n\n\n\n");}
 . { strcpy(yylval.cad,yytext); return NOVALIDO;}
               
 %%
