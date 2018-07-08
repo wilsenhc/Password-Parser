@@ -3,12 +3,12 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include <string.h>
 #include "sintactico.tab.h"
 
 void comprobar(char c[]);
 void tamano(char c[]);
-int aux = 0;
 
 %}
 
@@ -18,18 +18,17 @@ numero [0-9]+
 simbolo [=*-_.@&]+
 nosimbolo [!#$,/\:ˆ(){}’";%+?<>‘∼º¿¡áéíóúñÑ]+
 linea [\n]
-%array
 
 %%
 
  /**********REGLAS**********/
  
-{minuscula} { comprobar(yytext); aux = strlen(yytext) + aux; printf("\n\naux = %d\n\n",aux); return VALIDO; }
-{mayuscula} {comprobar(yytext); aux = strlen(yytext) + aux; printf("\n\naux = %d\n\n",aux); return VALIDO;}
-{numero} {comprobar(yytext); aux = strlen(yytext) + aux; printf("\n\naux = %d\n\n",aux); return VALIDO;}
-{simbolo} {comprobar(yytext); aux = strlen(yytext) + aux; printf("\n\naux = %d\n\n",aux); return VALIDO;}
+{minuscula} { strcpy(yylval,yytext); return MIN; }
+{mayuscula} {strcpy(yylval,yytext); return MAYUS;}
+{numero} {strcpy(yylval,yytext); return NUM;}
+{simbolo} {strcpy(yylval,yytext); return SIMB;}
 {linea} {return END;}
-. { return NOVALIDO;}
+. { strcpy(yylval,yytext); return NOVALIDO;}
               
 %%
 
