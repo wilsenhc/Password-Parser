@@ -7,56 +7,30 @@
 
  void yyerror(char s[]);
  extern int yylex(void);
+ void comprobar(char* c);
 
- char *cadena;
-
+ char *cadena = {'\0'};
 
 %}
 
-%define api.value.type {char*}
-%token<char*> MIN MAYUS NUM SIMB NOVALIDO EMPTY
+%union {
+    char* cad;
+}
+%token<cad> MIN MAYUS NUM SIMB NOVALIDO EMPTY
 %token<char> END
-%type <char*> Password ValidPassword
 %start Password
 
 
 %%
 
-Password: ValidPassword END { printf("\n\n\nesta es la cadena: %s\n\n\n",*$1); checkLength($1); } ;
+Password: NUM { strcat(cadena,$1); }
+| MIN { strcat(cadena,$1);}
+| MAYUS { strcat(cadena,$1); }
+| SIMB { strcat(cadena,$1); }
+| NOVALIDO { strcat(cadena,$1); }
+| END { /*comprobar(cadena); */ printf("\n\n\nLa cadena de texto es : %s\n\n\n", cadena);}
+; 
 
-ValidPassword: ValidPassword NUM ValidPassword MIN ValidPassword MAYUS ValidPassword SIMB ValidPassword {strcpy(cadena,$1); strcat(cadena,$2); strcat(cadena,$3); strcat(cadena,$4); strcat(cadena,$5); strcat(cadena,$6); strcat(cadena,$7);strcat(cadena,$8);strcat(cadena,$9);} 
-| ValidPassword NUM ValidPassword MIN ValidPassword SIMB ValidPassword MAYUS ValidPassword {strcpy(cadena,$1); strcat(cadena,$2); strcat(cadena,$3); strcat(cadena,$4); strcat(cadena,$5); strcat(cadena,$6); strcat(cadena,$7);strcat(cadena,$8);strcat(cadena,$9);} 
-| ValidPassword NUM ValidPassword SIMB ValidPassword MAYUS ValidPassword MIN ValidPassword {strcpy(cadena,$1); strcat(cadena,$2); strcat(cadena,$3); strcat(cadena,$4); strcat(cadena,$5); strcat(cadena,$6); strcat(cadena,$7);strcat(cadena,$8);strcat(cadena,$9);}
-| ValidPassword NUM ValidPassword SIMB ValidPassword MIN ValidPassword MAYUS ValidPassword {strcpy(cadena,$1); strcat(cadena,$2); strcat(cadena,$3); strcat(cadena,$4); strcat(cadena,$5); strcat(cadena,$6); strcat(cadena,$7);strcat(cadena,$8);strcat(cadena,$9);}
-| ValidPassword NUM ValidPassword MAYUS ValidPassword MIN ValidPassword SIMB ValidPassword {strcpy(cadena,$1); strcat(cadena,$2); strcat(cadena,$3); strcat(cadena,$4); strcat(cadena,$5); strcat(cadena,$6); strcat(cadena,$7);strcat(cadena,$8);strcat(cadena,$9);}
-| ValidPassword NUM ValidPassword MAYUS ValidPassword SIMB ValidPassword MIN ValidPassword {strcpy(cadena,$1); strcat(cadena,$2); strcat(cadena,$3); strcat(cadena,$4); strcat(cadena,$5); strcat(cadena,$6); strcat(cadena,$7);strcat(cadena,$8);strcat(cadena,$9);}
-
-| ValidPassword MIN ValidPassword NUM ValidPassword MAYUS ValidPassword SIMB ValidPassword {strcpy(cadena,$1); strcat(cadena,$2); strcat(cadena,$3); strcat(cadena,$4); strcat(cadena,$5); strcat(cadena,$6); strcat(cadena,$7);strcat(cadena,$8);strcat(cadena,$9);}
-| ValidPassword MIN ValidPassword NUM ValidPassword SIMB ValidPassword MAYUS ValidPassword {strcpy(cadena,$1); strcat(cadena,$2); strcat(cadena,$3); strcat(cadena,$4); strcat(cadena,$5); strcat(cadena,$6); strcat(cadena,$7);strcat(cadena,$8);strcat(cadena,$9);}
-| ValidPassword MIN ValidPassword MAYUS ValidPassword NUM ValidPassword SIMB ValidPassword {strcpy(cadena,$1); strcat(cadena,$2); strcat(cadena,$3); strcat(cadena,$4); strcat(cadena,$5); strcat(cadena,$6); strcat(cadena,$7);strcat(cadena,$8);strcat(cadena,$9);}
-| ValidPassword MIN ValidPassword MAYUS ValidPassword SIMB ValidPassword NUM ValidPassword {strcpy(cadena,$1); strcat(cadena,$2); strcat(cadena,$3); strcat(cadena,$4); strcat(cadena,$5); strcat(cadena,$6); strcat(cadena,$7);strcat(cadena,$8);strcat(cadena,$9);}
-| ValidPassword MIN ValidPassword SIMB ValidPassword MAYUS ValidPassword NUM ValidPassword {strcpy(cadena,$1); strcat(cadena,$2); strcat(cadena,$3); strcat(cadena,$4); strcat(cadena,$5); strcat(cadena,$6); strcat(cadena,$7);strcat(cadena,$8);strcat(cadena,$9);}
-| ValidPassword MIN ValidPassword SIMB ValidPassword NUM ValidPassword MAYUS ValidPassword {strcpy(cadena,$1); strcat(cadena,$2); strcat(cadena,$3); strcat(cadena,$4); strcat(cadena,$5); strcat(cadena,$6); strcat(cadena,$7);strcat(cadena,$8);strcat(cadena,$9);}
-
-| ValidPassword MAYUS ValidPassword MIN ValidPassword NUM ValidPassword SIMB ValidPassword {strcpy(cadena,$1); strcat(cadena,$2); strcat(cadena,$3); strcat(cadena,$4); strcat(cadena,$5); strcat(cadena,$6); strcat(cadena,$7);strcat(cadena,$8);strcat(cadena,$9);}
-| ValidPassword MAYUS ValidPassword MIN ValidPassword SIMB ValidPassword NUM ValidPassword {strcpy(cadena,$1); strcat(cadena,$2); strcat(cadena,$3); strcat(cadena,$4); strcat(cadena,$5); strcat(cadena,$6); strcat(cadena,$7);strcat(cadena,$8);strcat(cadena,$9);}
-| ValidPassword MAYUS ValidPassword NUM ValidPassword MIN ValidPassword SIMB ValidPassword {strcpy(cadena,$1); strcat(cadena,$2); strcat(cadena,$3); strcat(cadena,$4); strcat(cadena,$5); strcat(cadena,$6); strcat(cadena,$7);strcat(cadena,$8);strcat(cadena,$9);}
-| ValidPassword MAYUS ValidPassword NUM ValidPassword SIMB ValidPassword MIN ValidPassword {strcpy(cadena,$1); strcat(cadena,$2); strcat(cadena,$3); strcat(cadena,$4); strcat(cadena,$5); strcat(cadena,$6); strcat(cadena,$7);strcat(cadena,$8);strcat(cadena,$9);}
-| ValidPassword MAYUS ValidPassword SIMB ValidPassword MIN ValidPassword NUM ValidPassword {strcpy(cadena,$1); strcat(cadena,$2); strcat(cadena,$3); strcat(cadena,$4); strcat(cadena,$5); strcat(cadena,$6); strcat(cadena,$7);strcat(cadena,$8);strcat(cadena,$9);}
-| ValidPassword MAYUS ValidPassword SIMB ValidPassword NUM ValidPassword MIN ValidPassword {strcpy(cadena,$1); strcat(cadena,$2); strcat(cadena,$3); strcat(cadena,$4); strcat(cadena,$5); strcat(cadena,$6); strcat(cadena,$7);strcat(cadena,$8);strcat(cadena,$9);}
-
-| ValidPassword SIMB ValidPassword MIN ValidPassword MAYUS ValidPassword NUM ValidPassword {strcpy(cadena,$1); strcat(cadena,$2); strcat(cadena,$3); strcat(cadena,$4); strcat(cadena,$5); strcat(cadena,$6); strcat(cadena,$7);strcat(cadena,$8);strcat(cadena,$9);}
-| ValidPassword SIMB ValidPassword MIN ValidPassword NUM ValidPassword MAYUS ValidPassword {strcpy(cadena,$1); strcat(cadena,$2); strcat(cadena,$3); strcat(cadena,$4); strcat(cadena,$5); strcat(cadena,$6); strcat(cadena,$7);strcat(cadena,$8);strcat(cadena,$9);}
-| ValidPassword SIMB ValidPassword NUM ValidPassword MAYUS ValidPassword MIN ValidPassword {strcpy(cadena,$1); strcat(cadena,$2); strcat(cadena,$3); strcat(cadena,$4); strcat(cadena,$5); strcat(cadena,$6); strcat(cadena,$7);strcat(cadena,$8);strcat(cadena,$9);}
-| ValidPassword SIMB ValidPassword NUM ValidPassword MIN ValidPassword MAYUS ValidPassword {strcpy(cadena,$1); strcat(cadena,$2); strcat(cadena,$3); strcat(cadena,$4); strcat(cadena,$5); strcat(cadena,$6); strcat(cadena,$7);strcat(cadena,$8);strcat(cadena,$9);}
-| ValidPassword SIMB ValidPassword MAYUS ValidPassword NUM ValidPassword MIN ValidPassword {strcpy(cadena,$1); strcat(cadena,$2); strcat(cadena,$3); strcat(cadena,$4); strcat(cadena,$5); strcat(cadena,$6); strcat(cadena,$7);strcat(cadena,$8);strcat(cadena,$9);}
-| ValidPassword SIMB ValidPassword MAYUS ValidPassword MIN ValidPassword NUM ValidPassword {strcpy(cadena,$1); strcat(cadena,$2); strcat(cadena,$3); strcat(cadena,$4); strcat(cadena,$5); strcat(cadena,$6); strcat(cadena,$7);strcat(cadena,$8);strcat(cadena,$9);}
-
-| NUM 
-| MIN 
-| MAYUS 
-| SIMB
-;
 
 %%
 
@@ -74,3 +48,45 @@ void checkLength(char* str)
     }
     
 }
+
+void comprobar(char* c)
+{
+    int i,min,may,sim,tam;
+    min = 0;
+    may = 0;
+    sim = 0;
+    tam = strlen(c);
+    printf("tam = %d y la cadena es = %s",tam,c);
+    checkLength(c);  
+
+    for(i = 0; i < tam ; i++)
+    {
+        if(c[i] >= 'a' && c[i] <= 'z')
+        {
+            min++;
+        }
+        if(c[i] >= 'A' && c[i] <= 'Z')
+        {
+            may++;
+        }
+        if(c[i] == '=' ||c[i] == '*' ||c[i] == '-' ||c[i] == '_' ||c[i] == '.' ||c[i] == '@' ||c[i] == '&' )
+        {
+            sim++;
+        }
+    }
+    if(!min)
+    {
+        printf("\nLa clave debe de tener por lo menos una letras minuscula\n");
+    }
+    if(!may)
+    {
+        printf("\nLa clave debe de tener por lo menos una letras mayuscula\n");
+    }
+    if(!sim)
+    {
+        printf("\nLa clave debe de tener por lo menos un simbolo especial valido\n");
+    }
+}
+
+
+//validpass: valido NUM valido MIN valido MAYUS valido SIMB valido {strcpy(cadena,$1); strcat(cadena,$2); strcat(cadena,$3); strcat(cadena,$4); strcat(cadena,$5); strcat(cadena,$6); strcat(cadena,$7);strcat(cadena,$8);strcat(cadena,$9);};
