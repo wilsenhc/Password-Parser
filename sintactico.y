@@ -9,12 +9,12 @@
  extern int yylex(void);
  void comprobar(char* c);
 
- char *cadena = {'\0'};
+ char cadena[20] = {'\0'};
 
 %}
 
 %union {
-    char* cad;
+    char cad[20];
 }
 %token<cad> MIN MAYUS NUM SIMB NOVALIDO EMPTY
 %token<char> END
