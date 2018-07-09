@@ -7,34 +7,35 @@
 
  void yyerror(char s[]);
  extern int yylex(void);
- void comprobar(char* c);
+ void comprobar(char c[]);
+ void inicializar(char c[]);
 
- char cadena[200];
+ char cadena[200] = {'\0'};
  int indice = 0;
+ int band = 0;
 
 %}
 
 %union {
     char cad;
 }
-%token<cad> MIN MAYUS NUM SIMB NOVALIDO EMPTY
-%token<cad> END
-%start Password
+%token<cad> MIN MAYUS NUM SIMB NOVALIDO EMPTY END
+%start inicio
 
 
 %%
 
-Password: NUM Password { cadena[indice] = $1; indice++; printf("\n\n\nLa cadena de texto es : %s y el indice es %d\n\n\n", cadena, indice);}
-| MIN Password  { cadena[indice] = $1; indice++; printf("\n\n\nLa cadena de texto es : %s y el indice es %d\n\n\n", cadena, indice); }
-| MAYUS Password  { cadena[indice] = $1; indice++; printf("\n\n\nLa cadena de texto es : %s y el indice es %d\n\n\n", cadena, indice);}
-| SIMB Password  { cadena[indice] = $1; indice++; printf("\n\n\nLa cadena de texto es : %s y el indice es %d\n\n\n", cadena, indice); }
-| NOVALIDO Password  { cadena[indice] = $1; indice++;  printf("\n\n\nLa cadena de texto es : %s y el indice es %d\n\n\n", cadena, indice);}
-| END {}
-| NUM {cadena[indice] = $1; indice++; printf("\n\n\nLa cadena de texto es : %s y el indice es %d\n\n\n", cadena, indice);}
-| MAYUS {cadena[indice] = $1; indice++; printf("\n\n\nLa cadena de texto es : %s y el indice es %d\n\n\n", cadena, indice);}
-| SIMB {cadena[indice] = $1; indice++; printf("\n\n\nLa cadena de texto es : %s y el indice es %d\n\n\n", cadena, indice);}
-| NOVALIDO {cadena[indice] = $1; indice++; printf("\n\n\nLa cadena de texto es : %s y el indice es %d\n\n\n", cadena, indice);}
-; 
+inicio: 
+| Password {comprobar(cadena); inicializar(cadena); indice = 0;} inicio
+;
+
+Password: NUM Password { cadena[indice] = $1; indice++; }
+| MIN Password { cadena[indice] = $1; indice++;}
+| MAYUS Password { cadena[indice] = $1; indice++;}
+| SIMB Password { cadena[indice] = $1; indice++;}
+| NOVALIDO Password { cadena[indice] = $1; indice++; band++;}
+| END
+;
 
 
 %%
@@ -43,26 +44,24 @@ void yyerror(char s[])
 {
     printf("ERROR: %s\n",s);
 }
-
-void checkLength(char* str)
+void inicializar(char c[])
 {
-    int len = strlen(str);
-    if(!(len < 8 || len > 15))
-    {
-        printf("\nLa longitud de la contraseña tiene que estar entre 8 y 15 carateres\n");
-    }
-    
+    memset(c,'\0',199);
 }
 
-void comprobar(char* c)
+ void comprobar(char c[])
 {
-    int i,min,may,sim,tam;
+    int i,min,may,sim,tam,num;
+    num = 0;
     min = 0;
     may = 0;
     sim = 0;
     tam = strlen(c);
     printf("tam = %d y la cadena es = %s",tam,c);
-    checkLength(c);  
+    if(tam < 8 || tam > 15)
+    {
+        printf("\nLa longitud de la contraseña tiene que estar entre 8 y 15 carateres\n");
+    }  
 
     for(i = 0; i < tam ; i++)
     {
@@ -78,6 +77,10 @@ void comprobar(char* c)
         {
             sim++;
         }
+        if(c[i] >= '0' && c[i] <= '9')
+        {
+            num++;
+        }
     }
     if(!min)
     {
@@ -91,7 +94,22 @@ void comprobar(char* c)
     {
         printf("\nLa clave debe de tener por lo menos un simbolo especial valido\n");
     }
+    if(!num)
+    {
+        printf("\nLa clave debe de tener por lo menos un numero\n");
+    }
+    if(band)
+    {
+        printf("\nLA clave no puede tener simbolos no validos\n");
+    }
+    if(min && may && sim && num && !band)
+    {
+        printf("\nclave aceptada\n");
+    }
 }
+int main()
+{
+    yyparse();
 
-
-//validpass: valido NUM valido MIN valido MAYUS valido SIMB valido {strcpy(cadena,$1); strcat(cadena,$2); strcat(cadena,$3); strcat(cadena,$4); strcat(cadena,$5); strcat(cadena,$6); strcat(cadena,$7);strcat(cadena,$8);strcat(cadena,$9);};
+    return 0;
+}
