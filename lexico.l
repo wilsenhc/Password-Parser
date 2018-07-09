@@ -9,13 +9,12 @@
 
 %}
 
-linea [\n]
 minuscula [a-z]
 mayuscula [A-Z]
 numero [0-9]
 simbolo [=*-_.@&]
 nosimbolo [!#$,/\:ˆ(){}’";%+?<>‘∼º¿¡áéíóúñÑ]
-
+linea [\n]
 
 %%
 
@@ -25,14 +24,7 @@ nosimbolo [!#$,/\:ˆ(){}’";%+?<>‘∼º¿¡áéíóúñÑ]
 {mayuscula} {yylval.cad = *yytext; return MAYUS;}
 {numero} {yylval.cad = *yytext; return NUM;}
 {simbolo} {yylval.cad = *yytext;return SIMB;}
-{linea} { yylval.cad = '\0'; return END; }
+{linea} {return END; }
 {nosimbolo} { yylval.cad = *yytext; return NOVALIDO;}
-              
+
 %%
-
-int main()
-{
-    yyparse();
-
-    return 0;
-}
