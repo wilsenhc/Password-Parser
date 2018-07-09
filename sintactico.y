@@ -9,26 +9,31 @@
  extern int yylex(void);
  void comprobar(char* c);
 
- char cadena[20] = {'\0'};
+ char cadena[200];
+ int indice = 0;
 
 %}
 
 %union {
-    char cad[20];
+    char cad;
 }
 %token<cad> MIN MAYUS NUM SIMB NOVALIDO EMPTY
-%token<char> END
+%token<cad> END
 %start Password
 
 
 %%
 
-Password: NUM { strcat(cadena,$1); }
-| MIN { strcat(cadena,$1);}
-| MAYUS { strcat(cadena,$1); }
-| SIMB { strcat(cadena,$1); }
-| NOVALIDO { strcat(cadena,$1); }
-| END { /*comprobar(cadena); */ printf("\n\n\nLa cadena de texto es : %s\n\n\n", cadena);}
+Password: NUM Password { cadena[indice] = $1; indice++; printf("\n\n\nLa cadena de texto es : %s y el indice es %d\n\n\n", cadena, indice);}
+| MIN Password  { cadena[indice] = $1; indice++; printf("\n\n\nLa cadena de texto es : %s y el indice es %d\n\n\n", cadena, indice); }
+| MAYUS Password  { cadena[indice] = $1; indice++; printf("\n\n\nLa cadena de texto es : %s y el indice es %d\n\n\n", cadena, indice);}
+| SIMB Password  { cadena[indice] = $1; indice++; printf("\n\n\nLa cadena de texto es : %s y el indice es %d\n\n\n", cadena, indice); }
+| NOVALIDO Password  { cadena[indice] = $1; indice++;  printf("\n\n\nLa cadena de texto es : %s y el indice es %d\n\n\n", cadena, indice);}
+| END {}
+| NUM {cadena[indice] = $1; indice++; printf("\n\n\nLa cadena de texto es : %s y el indice es %d\n\n\n", cadena, indice);}
+| MAYUS {cadena[indice] = $1; indice++; printf("\n\n\nLa cadena de texto es : %s y el indice es %d\n\n\n", cadena, indice);}
+| SIMB {cadena[indice] = $1; indice++; printf("\n\n\nLa cadena de texto es : %s y el indice es %d\n\n\n", cadena, indice);}
+| NOVALIDO {cadena[indice] = $1; indice++; printf("\n\n\nLa cadena de texto es : %s y el indice es %d\n\n\n", cadena, indice);}
 ; 
 
 
