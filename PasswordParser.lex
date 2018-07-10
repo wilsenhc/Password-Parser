@@ -1,22 +1,40 @@
 %{
-#include "PasswordParser.y.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
+#include "PasswordParser.tab.h"
 %}
 
-digit           [0-9]
-lowercase       [a-z]
-uppercase       [A-Z]
-symbol          [\=\*\-\_\.\@\&]
-nonvalidsym     [\!\#\$\,\/\:\ˆ\(\)\{\}\’\"\;\%\+\?\<\>\‘\∼\º\¿\¡\á\é\í\ó\ú\ñ\Ñ]
+minuscula   [a-z]
+mayuscula   [A-Z]
+numero      [0-9]
+simbolo     [\=\*\-\_\.\@\&]
+nosimbolo   [\!\#\$\,\/\\\:\ˆ\(\)\{\}\’\"\;\%\+\?\<\>\‘\∼\º\¿\¡\á\é\í\ó\ú\ñ\Ñ]
+linea       [\n]
 
 %%
-
-{digit}         return NUM;
-{lowercase}     return LOW;
-{uppercase}     return UPP;
-{symbol}        return SYM;
-{nonvalidsym}   { 
-                    yyerror("Simbolo invalido");
-                    return ERR_SYM;
+ 
+{minuscula}     {
+                    yylval.cad = *yytext;
+                    return MIN;
+                }
+{mayuscula}     {
+                    yylval.cad = *yytext;
+                    return MAYUS;
+                }
+{numero}        {
+                    yylval.cad = *yytext;
+                    return NUM;
+                }
+{simbolo}       {
+                    yylval.cad = *yytext;
+                    return SIMB;
+                }
+{linea}         return END;
+{nosimbolo}     {
+                    yylval.cad = *yytext; 
+                    return NOVALIDO;
                 }
 
-"\n"            return END;
+%%
