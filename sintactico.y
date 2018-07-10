@@ -57,7 +57,7 @@ void inicializar(char c[])
     may = 0;
     sim = 0;
     tam = strlen(c);
-    printf("tam = %d y la cadena es = %s",tam,c);
+    printf("\ntam = %d y la cadena es = %s\n",tam,c);
     if(tam < 8 || tam > 15)
     {
         printf("\nLa longitud de la contraseña tiene que estar entre 8 y 15 carateres\n");
@@ -106,6 +106,7 @@ void inicializar(char c[])
     {
         printf("\nclave aceptada\n");
     }
+    band = 0;
 }
 int main()
 {
